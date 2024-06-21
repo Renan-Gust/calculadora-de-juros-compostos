@@ -1,24 +1,31 @@
 import { Table as TableContainer, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+import { useResult } from '@/contexts/ResultContexts';
+import { formatCurrency } from '@/utils/formatCurrency';
+import { getMonths } from '@/utils/getMonths';
 
 export function Table(){
+    const { total } = useResult();
+
     return(
         <div className="w-full overflow-auto">
             <TableContainer>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Final Value</TableHead>
-                        <TableHead>Accumulated Interest</TableHead>
-                        <TableHead>Effective Annual Rate</TableHead>
-                        <TableHead>Future Value</TableHead>
+                        <TableHead>Mês</TableHead>
+                        <TableHead>Juros</TableHead>
+                        <TableHead>Total de Juros</TableHead>
+                        <TableHead>Acumulado</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow>
-                        <TableCell>$10,000.00</TableCell>
-                        <TableCell>$2,000.00</TableCell>
-                        <TableCell>10%</TableCell>
-                        <TableCell>$12,000.00</TableCell>
-                    </TableRow>
+                    {total.map((item, index) => (
+                        <TableRow key={index}>
+                            <TableCell>{item.month} - {getMonths(item.month)}</TableCell>
+                            <TableCell>{formatCurrency(item.interest)}</TableCell>
+                            <TableCell>{formatCurrency(item.interestTotal)}</TableCell>
+                            <TableCell>{formatCurrency(item.accumulated)}</TableCell>
+                        </TableRow>
+                    ))}
                 </TableBody>
             </TableContainer>
         </div>
