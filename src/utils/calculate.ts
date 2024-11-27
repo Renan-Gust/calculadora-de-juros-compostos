@@ -9,7 +9,7 @@ interface CalculateProps {
 }
 
 export function calculate({ interestRate, initialValue, monthValue, period, setTotal }: CalculateProps){
-    const monthsTotal = period * (12 + 1);
+    const monthsTotal = (period * 12) + 1;
     const monthlyRate = (interestRate / 12) / 100;
     const totalTemp: TotalType[] = [];
 

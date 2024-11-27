@@ -7,27 +7,25 @@ export function Table(){
     const { total } = useResult();
 
     return(
-        <div className="w-full overflow-auto">
-            <TableContainer>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Mês</TableHead>
-                        <TableHead>Juros</TableHead>
-                        <TableHead>Total de Juros</TableHead>
-                        <TableHead>Acumulado</TableHead>
+        <TableContainer>
+            <TableHeader className='sticky top-0 bg-primary'>
+                <TableRow>
+                    <TableHead className='text-primary-foreground text-center'>Mês</TableHead>
+                    <TableHead className='text-primary-foreground text-center'>Juros</TableHead>
+                    <TableHead className='text-primary-foreground text-center'>Total de Juros</TableHead>
+                    <TableHead className='text-primary-foreground text-center'>Acumulado</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {total.map((item, index) => (
+                    <TableRow key={index}>
+                        <TableCell className='text-center'>{item.month} - {getMonths(item.month)}</TableCell>
+                        <TableCell className='text-center'>{formatCurrency(item.interest)}</TableCell>
+                        <TableCell className='text-center'>{formatCurrency(item.interestTotal)}</TableCell>
+                        <TableCell className='text-center'>{formatCurrency(item.accumulated)}</TableCell>
                     </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {total.map((item, index) => (
-                        <TableRow key={index}>
-                            <TableCell>{item.month} - {getMonths(item.month)}</TableCell>
-                            <TableCell>{formatCurrency(item.interest)}</TableCell>
-                            <TableCell>{formatCurrency(item.interestTotal)}</TableCell>
-                            <TableCell>{formatCurrency(item.accumulated)}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </TableContainer>
-        </div>
+                ))}
+            </TableBody>
+        </TableContainer>
     );
 }
