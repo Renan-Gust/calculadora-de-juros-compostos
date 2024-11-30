@@ -9,7 +9,10 @@ export const ResultContextProvider = ({ children }: { children: React.ReactNode 
     const [monthValue, setMonthValue] = useState(0);
     const [interestRate, setInterestRate] = useState(0);
     const [period, setPeriod] = useState(0);
-    const [total, setTotal] = useState<TotalType[]>([]);
+    const [total, setTotal] = useState<TotalType>({
+        amountAccumulated: 0,
+        results: []
+    });
 
     return(
         <Context.Provider value={{

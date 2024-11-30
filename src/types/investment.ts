@@ -1,10 +1,13 @@
 import { Dispatch, SetStateAction } from 'react';
 
 export interface TotalType {
-    month: number;
-    interest: number;
-    interestTotal: number;
-    accumulated : number;
+    amountAccumulated: number;
+    results: {
+        month: number;
+        interest: number;
+        interestTotal: number;
+        accumulated : number;
+    }[];
 }
 
 export interface InvestmentType {
@@ -16,6 +19,6 @@ export interface InvestmentType {
     setMonthValue: Dispatch<SetStateAction<number>>;
     period: number;
     setPeriod: Dispatch<SetStateAction<number>>;
-    total: TotalType[];
-    setTotal: Dispatch<SetStateAction<TotalType[]>>;
+    total: TotalType;
+    setTotal: Dispatch<SetStateAction<TotalType>>;
 }

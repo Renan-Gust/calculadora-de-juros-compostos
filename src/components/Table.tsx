@@ -6,6 +6,10 @@ import { getMonths } from '@/utils/getMonths';
 export function Table(){
     const { total } = useResult();
 
+    if(total.results.length === 0){
+        return;
+    }
+
     return(
         <TableContainer>
             <TableHeader className='sticky top-0 bg-primary'>
@@ -17,7 +21,7 @@ export function Table(){
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {total.map((item, index) => (
+                {total.results.map((item, index) => (
                     <TableRow key={index}>
                         <TableCell className='text-center'>{item.month} - {getMonths(item.month)}</TableCell>
                         <TableCell className='text-center'>{formatCurrency(item.interest)}</TableCell>

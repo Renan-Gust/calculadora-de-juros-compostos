@@ -9,10 +9,8 @@ import { useResult } from '@/contexts/ResultContexts';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { formatPercentage } from '@/utils/formatPercentage';
 
-// Valor total investido
-// Reajuste anual
+// Reajuste anual - Colocar uma informo que o reajuste anual so vai funcionar a partir do segundo ano...
 // Colocar grafico
-// Colocar em cards os resultados
 
 export function Calculator(){
     const { interestRate, setInterestRate, initialValue, setInitialValue, monthValue, setMonthValue, period, setPeriod, setTotal } = useResult();
@@ -41,7 +39,7 @@ export function Calculator(){
         <div className="w-full">
             <div className="grid grid-cols-1 gap-4 mb-6">
 
-                <div className='grid grid-cols-[1fr_2fr] gap-4'>
+                <div className='grid grid-cols-2 md:grid-cols-[1fr_2fr] gap-4'>
                     <div className="space-y-2">
                         <Label htmlFor="initial-value">Valor inicial</Label>
                         <Input
@@ -108,7 +106,7 @@ export function Calculator(){
                     </div>
                 </div>
 
-                <div className='grid grid-cols-[1fr_2fr] gap-4'>
+                <div className='grid grid-cols-2 md:grid-cols-[1fr_2fr] gap-4'>
                     <div className="space-y-2">
                         <Label htmlFor="monthly-investment">Investimento mensal</Label>
                         <Input
