@@ -1,15 +1,17 @@
 import { useState } from 'react';
+import { Info } from 'lucide-react';
 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+
 import { calculate } from '@/utils/calculate';
 import { useResult } from '@/contexts/ResultContexts';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { formatPercentage } from '@/utils/formatPercentage';
 
-// Reajuste anual - Colocar uma informo que o reajuste anual so vai funcionar a partir do segundo ano...
 // Colocar grafico
 
 export function Calculator(){
@@ -38,7 +40,6 @@ export function Calculator(){
     return(
         <div className="w-full">
             <div className="grid grid-cols-1 gap-4 mb-6">
-
                 <div className='grid grid-cols-2 md:grid-cols-[1fr_2fr] gap-4'>
                     <div className="space-y-2">
                         <Label htmlFor="initial-value">Valor inicial</Label>
@@ -145,6 +146,34 @@ export function Calculator(){
                                 </SelectContent>
                             </Select>
                         </div>
+                    </div>
+                </div>
+
+                <div className="space-y-2">
+                    <Label htmlFor="yearly-adjustment">Reajuste anual</Label>
+
+                    <div className="flex items-center gap-2">
+                        <Input
+                            id="yearly-adjustment"
+                            type="text"
+                            placeholder="0"
+                            onChange={(e) => {
+                                setInterestRate(+e.target.value);
+                            }}
+                        />
+
+                        <HoverCard openDelay={200}>
+                            <HoverCardTrigger asChild>
+                                <Button variant="ghost">
+                                    <Info />
+                                </Button>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="w-80">
+                                <div className="space-y-1">
+                                    <p className="text-sm">O reajuste só vai ser aplicado a partir do 13° mês.</p>
+                                </div>
+                            </HoverCardContent>
+                        </HoverCard>
                     </div>
                 </div>
             </div>

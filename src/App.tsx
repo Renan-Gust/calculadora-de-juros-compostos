@@ -5,7 +5,7 @@ import { Results } from './components/Results';
 
 function App(){
     return(
-        <div className="flex flex-col items-center justify-center gap-8 w-full max-w-2xl mx-auto px-4 md:px-8 py-20 [&>div]:max-h-96">
+        <div className="flex flex-col items-center justify-center gap-8 w-full max-w-2xl mx-auto px-4 md:px-8 py-20 min-h-screen [&>div]:max-h-96">
             <ResultContextProvider>
                 <Calculator />
                 <Results />

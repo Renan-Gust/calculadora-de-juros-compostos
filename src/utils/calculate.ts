@@ -38,6 +38,12 @@ export function calculate({ interestRate, initialValue, monthValue, period, setT
         }
 
         if(index > 1){
+            if(monthsTotal >= 13){
+                const taxaReajuste = 0.10;
+                const monthsValuesAdjustment = calculateYearlyAdjustment(monthValue, taxaReajuste, monthsTotal - 1);
+                console.log(monthsValuesAdjustment);
+            }
+
             const interest = Number((totalTemp.results[index - 1].accumulated * monthlyRate).toFixed(2));
 
             totalTemp.results.push({
@@ -61,4 +67,17 @@ function calculateInterestTotal(totalTemp: TotalType){
     [...totalTemp.results].map(item => interest += item.interest);
 
     return Number((interest).toFixed(2));
+}
+
+function calculateYearlyAdjustment(monthValue: number, rate: number, months: number){
+    let monthsValuesAdjustment = [];
+                
+    for (let month = 1; month <= months; month++) {
+        const years = (Math.floor((month - 13) / 12)) + 1;
+        const monthValueAdjustment = monthValue * Math.pow(1 + rate, years);
+
+        monthsValuesAdjustment.push(+monthValueAdjustment.toFixed(2));
+    }
+
+    return monthsValuesAdjustment;
 }
