@@ -22,4 +22,6 @@ export interface InvestmentType {
     setPeriod: Dispatch<SetStateAction<number>>;
     total: TotalType;
     setTotal: Dispatch<SetStateAction<TotalType>>;
+    yearlyAdjustment: number;
+    setYearlyAdjustment: Dispatch<SetStateAction<number>>;
 }

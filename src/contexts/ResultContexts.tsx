@@ -9,6 +9,7 @@ export const ResultContextProvider = ({ children }: { children: React.ReactNode 
     const [monthValue, setMonthValue] = useState(0);
     const [interestRate, setInterestRate] = useState(0);
     const [period, setPeriod] = useState(0);
+    const [yearlyAdjustment, setYearlyAdjustment] = useState(0);
     const [total, setTotal] = useState<TotalType>({
         amountAccumulated: 0,
         results: []
@@ -25,7 +26,9 @@ export const ResultContextProvider = ({ children }: { children: React.ReactNode 
             monthValue,
             setMonthValue,
             total,
-            setTotal
+            setTotal,
+            yearlyAdjustment,
+            setYearlyAdjustment
         }}
         >
             {children}

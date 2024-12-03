@@ -1,14 +1,15 @@
 import { InvestmentType, TotalType } from '@/types/investment';
 
 interface CalculateProps {
-    interestRate: InvestmentType['interestRate']
-    initialValue: InvestmentType['initialValue']
-    monthValue: InvestmentType['monthValue']
-    period: InvestmentType['period']
-    setTotal: InvestmentType['setTotal']
+    interestRate: InvestmentType['interestRate'];
+    initialValue: InvestmentType['initialValue'];
+    monthValue: InvestmentType['monthValue'];
+    period: InvestmentType['period'];
+    setTotal: InvestmentType['setTotal'];
+    yearlyAdjustment: InvestmentType['yearlyAdjustment'];
 }
 
-export function calculate({ interestRate, initialValue, monthValue, period, setTotal }: CalculateProps){
+export function calculate({ interestRate, initialValue, monthValue, period, setTotal, yearlyAdjustment }: CalculateProps){
     const monthsTotal = (period * 12) + 1;
     const monthlyRate = (interestRate / 12) / 100;
     const totalTemp: TotalType = {
@@ -52,8 +53,9 @@ export function calculate({ interestRate, initialValue, monthValue, period, setT
             });
 
             if(monthsTotal >= 13){
-                const taxaReajuste = 0.10;
-                monthsValuesAdjustment = calculateYearlyAdjustment(monthValue, taxaReajuste, monthsTotal - 1);
+                const yearlyAdjustmentPercentage = yearlyAdjustment / 100;
+                console.log(yearlyAdjustmentPercentage);
+                monthsValuesAdjustment = calculateYearlyAdjustment(monthValue, yearlyAdjustmentPercentage, monthsTotal - 1);
 
                 const currentMonthValue = monthsValuesAdjustment[index];
 

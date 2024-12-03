@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Info } from 'lucide-react';
+import { NumericFormat } from 'react-number-format';
 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -9,31 +9,32 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 
 import { calculate } from '@/utils/calculate';
 import { useResult } from '@/contexts/ResultContexts';
-import { formatCurrency } from '@/utils/formatCurrency';
-import { formatPercentage } from '@/utils/formatPercentage';
 
 // Colocar grafico
 
 export function Calculator(){
-    const { interestRate, setInterestRate, initialValue, setInitialValue, monthValue, setMonthValue, period, setPeriod, setTotal } = useResult();
-
-    const [initialValueFormatted, setInitialValueFormatted] = useState(formatCurrency(0));
-    const [monthValueFormatted, setMonthValueFormatted] = useState(formatCurrency(0));
-    const [interestRateFormatted, setInterestRateFormatted] = useState('0.00%');
+    const {
+        interestRate,
+        setInterestRate,
+        initialValue,
+        setInitialValue,
+        monthValue,
+        setMonthValue,
+        period,
+        setPeriod,
+        setTotal,
+        yearlyAdjustment,
+        setYearlyAdjustment        
+    } = useResult();
 
     function handleCalculate(){
-        const initialValueOriginal = parseFloat(initialValueFormatted.replace('R$', '').replace('.', '').replace(',', '.'));
-        const monthValueOriginal = parseFloat(monthValueFormatted.replace('R$', '').replace('.', '').replace(',', '.'));
-
-        setInitialValue(initialValueOriginal);
-        setMonthValue(monthValueOriginal);
-
         calculate({
             interestRate,
-            initialValue: initialValueOriginal,
-            monthValue: monthValueOriginal,
+            initialValue,
+            monthValue,
             period,
-            setTotal
+            setTotal,
+            yearlyAdjustment
         });
     }
 
@@ -43,16 +44,18 @@ export function Calculator(){
                 <div className='grid grid-cols-2 md:grid-cols-[1fr_2fr] gap-4'>
                     <div className="space-y-2">
                         <Label htmlFor="initial-value">Valor inicial</Label>
-                        <Input
-                            id="initial-value"
-                            type="text"
+                        <NumericFormat
+                            value={initialValue || ''}
+                            onValueChange={(values) => setInitialValue(values.floatValue ?? 0)}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            prefix="R$ "
+                            fixedDecimalScale={true}
+                            decimalScale={2}
+                            allowNegative={false}
+                            customInput={Input}
                             placeholder="R$ 0,00"
-                            value={initialValueFormatted}
-                            onChange={(e) => {
-                                const rawValue = e.target.value.replace(/\D/g, '');
-                                const numberValue = rawValue ? parseInt(rawValue, 10) : 0;
-                                setInitialValueFormatted(formatCurrency(numberValue / 100));
-                            }}
+                            id="initial-value"
                         />
                     </div>
                 
@@ -60,38 +63,19 @@ export function Calculator(){
                         <Label htmlFor="interest-rate">Taxa de juros</Label>
 
                         <div className="grid grid-cols-[2fr_1fr]">
-                            <Input
+                            <NumericFormat
+                                suffix="%"
+                                decimalScale={2}
+                                fixedDecimalScale={false}
+                                allowNegative={false}
+                                thousandSeparator="."
+                                decimalSeparator=","
+                                customInput={Input}
+                                value={interestRate || ''}
+                                onValueChange={(values) => setInterestRate(values.floatValue || 0)}
+                                placeholder="0%"
+                                className="rounded-tr-none rounded-br-none"
                                 id="interest-rate"
-                                type="text"
-                                placeholder="0"
-                                className='rounded-tr-none rounded-br-none'
-                                // value={interestRateFormatted}
-                                onChange={(e) => {
-                                    // Captura o valor digitado
-                                    // let rawValue = e.target.value;
-
-                                    // // Permite apenas números e ponto decimal
-                                    // rawValue = rawValue.replace(/[^0-9.]/g, '');
-
-                                    // // Se houver mais de um ponto decimal, remove o extra
-                                    // const parts = rawValue.split('.');
-                                    // if (parts.length > 2) {
-                                    //     rawValue = parts[0] + '.' + parts.slice(1).join('');
-                                    // }
-
-                                    // // Converte o valor para número e divide por 100 para obter a porcentagem
-                                    // const numberValue = rawValue ? parseFloat(rawValue) : 0;
-                                    // const percentageValue = numberValue / 100;
-
-                                    // // Se o valor for um número inteiro, exibe sem casas decimais
-                                    // if (Number.isInteger(percentageValue)) {
-                                    //     setInterestRateFormatted(`${percentageValue}%`);
-                                    // } else {
-                                    //     // Caso contrário, formata com 2 casas decimais
-                                    //     setInterestRateFormatted(`${percentageValue.toFixed(2)}%`);
-                                    // }
-                                    setInterestRate(+e.target.value);
-                                }}
                             />
 
                             <Select defaultValue='yearly'>
@@ -110,16 +94,18 @@ export function Calculator(){
                 <div className='grid grid-cols-2 md:grid-cols-[1fr_2fr] gap-4'>
                     <div className="space-y-2">
                         <Label htmlFor="monthly-investment">Investimento mensal</Label>
-                        <Input
-                            id="monthly-investment"
-                            type="text"
+                        <NumericFormat
+                            value={monthValue || ''}
+                            onValueChange={(values) => setMonthValue(values.floatValue ?? 0)}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            prefix="R$ "
+                            fixedDecimalScale={true}
+                            decimalScale={2}
+                            allowNegative={false}
+                            customInput={Input}
                             placeholder="R$ 0,00"
-                            value={monthValueFormatted}
-                            onChange={(e) => {
-                                const rawValue = e.target.value.replace(/\D/g, '');
-                                const numberValue = rawValue ? parseInt(rawValue, 10) : 0;
-                                setMonthValueFormatted(formatCurrency(numberValue / 100));
-                            }}
+                            id="monthly-investment"
                         />
                     </div>
 
@@ -153,13 +139,18 @@ export function Calculator(){
                     <Label htmlFor="yearly-adjustment">Reajuste anual</Label>
 
                     <div className="flex items-center gap-2">
-                        <Input
+                        <NumericFormat
+                            suffix="%"
+                            decimalScale={2}
+                            fixedDecimalScale={false}
+                            allowNegative={false}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            customInput={Input}
+                            value={yearlyAdjustment || ''}
+                            onValueChange={(values) => setYearlyAdjustment(values.floatValue || 0)}
+                            placeholder="0%"
                             id="yearly-adjustment"
-                            type="text"
-                            placeholder="0"
-                            onChange={(e) => {
-                                setInterestRate(+e.target.value);
-                            }}
                         />
 
                         <HoverCard openDelay={200}>
