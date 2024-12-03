@@ -7,6 +7,7 @@ export interface TotalType {
         interest: number;
         interestTotal: number;
         accumulated : number;
+        monthValue: number;
     }[];
 }
 

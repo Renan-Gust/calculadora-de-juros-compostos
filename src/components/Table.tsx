@@ -15,6 +15,7 @@ export function Table(){
             <TableHeader className='sticky top-0 bg-primary'>
                 <TableRow>
                     <TableHead className='text-primary-foreground text-center'>Mês</TableHead>
+                    <TableHead className='text-primary-foreground text-center'>Aporte</TableHead>
                     <TableHead className='text-primary-foreground text-center'>Juros</TableHead>
                     <TableHead className='text-primary-foreground text-center'>Total de Juros</TableHead>
                     <TableHead className='text-primary-foreground text-center'>Acumulado</TableHead>
@@ -24,6 +25,7 @@ export function Table(){
                 {total.results.map((item, index) => (
                     <TableRow key={index}>
                         <TableCell className='text-center'>{item.month} - {getMonths(item.month)}</TableCell>
+                        <TableCell className='text-center'>{formatCurrency(item.monthValue)}</TableCell>
                         <TableCell className='text-center'>{formatCurrency(item.interest)}</TableCell>
                         <TableCell className='text-center'>{formatCurrency(item.interestTotal)}</TableCell>
                         <TableCell className='text-center'>{formatCurrency(item.accumulated)}</TableCell>
