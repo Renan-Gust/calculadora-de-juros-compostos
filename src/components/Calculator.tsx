@@ -10,8 +10,6 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import { calculate } from '@/utils/calculate';
 import { useResult } from '@/contexts/ResultContexts';
 
-// Colocar grafico
-
 export function Calculator(){
     const {
         interestRate,
@@ -41,7 +39,7 @@ export function Calculator(){
     return(
         <div className="w-full">
             <div className="grid grid-cols-1 gap-4 mb-6">
-                <div className='grid grid-cols-2 md:grid-cols-[1fr_2fr] gap-4'>
+                <div className='grid grid-cols-2 md:grid-cols-2 gap-4'>
                     <div className="space-y-2">
                         <Label htmlFor="initial-value">Valor inicial</Label>
                         <NumericFormat
@@ -91,7 +89,7 @@ export function Calculator(){
                     </div>
                 </div>
 
-                <div className='grid grid-cols-2 md:grid-cols-[1fr_2fr] gap-4'>
+                <div className='grid grid-cols-2 md:grid-cols-2 gap-4'>
                     <div className="space-y-2">
                         <Label htmlFor="monthly-investment">Investimento mensal</Label>
                         <NumericFormat
@@ -118,7 +116,7 @@ export function Calculator(){
                                 type="number"
                                 placeholder="0"
                                 className='rounded-tr-none rounded-br-none'
-                                value={period}
+                                value={period || ''}
                                 onChange={(e) => setPeriod(parseInt(e.target.value))}
                             />
 

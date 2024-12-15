@@ -25,7 +25,8 @@ export function calculate({ interestRate, initialValue, monthValue, period, setT
                 interest: 0,
                 interestTotal: 0,
                 accumulated:  initialValue + monthValue,
-                monthValue: monthValue
+                monthValue: monthValue,
+                amountInvested: initialValue + monthValue
             });
         }
         
@@ -37,7 +38,8 @@ export function calculate({ interestRate, initialValue, monthValue, period, setT
                 interest,
                 interestTotal: interest,
                 accumulated: Number((interest + monthValue + totalTemp.results[index - 1].accumulated).toFixed(2)),
-                monthValue: monthValue
+                monthValue: monthValue,
+                amountInvested: totalTemp.results[index - 1].amountInvested + monthValue
             });
         }
 
@@ -49,7 +51,8 @@ export function calculate({ interestRate, initialValue, monthValue, period, setT
                 interest,
                 interestTotal: 0,
                 accumulated: 0,
-                monthValue: 0
+                monthValue: 0,
+                amountInvested: 0
             });
 
             if(monthsTotal >= 13){
@@ -61,9 +64,11 @@ export function calculate({ interestRate, initialValue, monthValue, period, setT
 
                 totalTemp.results[index].accumulated = Number((interest + currentMonthValue + totalTemp.results[index - 1].accumulated).toFixed(2));
                 totalTemp.results[index].monthValue = currentMonthValue;
+                totalTemp.results[index].amountInvested = totalTemp.results[index - 1].amountInvested + currentMonthValue;
             } else {
                 totalTemp.results[index].accumulated = Number((interest + monthValue + totalTemp.results[index - 1].accumulated).toFixed(2));
                 totalTemp.results[index].monthValue = monthValue;
+                totalTemp.results[index].amountInvested = totalTemp.results[index - 1].amountInvested + monthValue;
             }
 
             totalTemp.results[index].interestTotal = calculateInterestTotal(totalTemp);

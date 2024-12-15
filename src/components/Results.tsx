@@ -15,7 +15,7 @@ export function Results() {
     }
 
     return (
-        <div className='flex flex-wrap justify-between gap-4 w-full mb-10 md:mb-0'>
+        <div className='flex flex-wrap justify-between gap-4 w-full mb-4 md:lg-0'>
             <Card className='flex-1'>
                 <CardHeader>
                     <CardTitle className='text-center text-lg'>Total em juros</CardTitle>
