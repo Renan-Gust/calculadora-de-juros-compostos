@@ -11,7 +11,7 @@ interface CalculateProps {
 
 export function calculate({ interestRate, initialValue, monthValue, period, setTotal, yearlyAdjustment }: CalculateProps){
     const monthsTotal = (period * 12) + 1;
-    const monthlyRate = (interestRate / 12) / 100;
+    const monthlyRate = Math.pow(1 + interestRate / 100, 1 / 12) - 1;
     const totalTemp: TotalType = {
         amountAccumulated: 0,
         results: []
@@ -29,23 +29,13 @@ export function calculate({ interestRate, initialValue, monthValue, period, setT
                 amountInvested: initialValue + monthValue
             });
         }
-        
-        if(index === 1){
-            const interest = Number((initialValue === 0 ? 0 : initialValue * monthlyRate).toFixed(2));
 
-            totalTemp.results.push({
-                month: index,
-                interest,
-                interestTotal: interest,
-                accumulated: Number((interest + monthValue + totalTemp.results[index - 1].accumulated).toFixed(2)),
-                monthValue: monthValue,
-                amountInvested: totalTemp.results[index - 1].amountInvested + monthValue
-            });
-        }
+        if(index > 0){
+            const previousAccumulated = totalTemp.results[index - 1].accumulated;
+            const interest = Number((previousAccumulated * monthlyRate).toFixed(2));
 
-        if(index > 1){
-            const interest = Number((totalTemp.results[index - 1].accumulated * monthlyRate).toFixed(2));
-
+            const isNotLastMonth = index < Array.from({ length: monthsTotal }).length - 1;
+    
             totalTemp.results.push({
                 month: index,
                 interest,
@@ -55,28 +45,30 @@ export function calculate({ interestRate, initialValue, monthValue, period, setT
                 amountInvested: 0
             });
 
-            if(monthsTotal >= 13){
+            if(monthsTotal >= 13 && yearlyAdjustment){
                 const yearlyAdjustmentPercentage = yearlyAdjustment / 100;
-                console.log(yearlyAdjustmentPercentage);
                 monthsValuesAdjustment = calculateYearlyAdjustment(monthValue, yearlyAdjustmentPercentage, monthsTotal - 1);
 
                 const currentMonthValue = monthsValuesAdjustment[index];
+                const monthValueLastMonth = isNotLastMonth ? currentMonthValue : 0;
 
-                totalTemp.results[index].accumulated = Number((interest + currentMonthValue + totalTemp.results[index - 1].accumulated).toFixed(2));
-                totalTemp.results[index].monthValue = currentMonthValue;
-                totalTemp.results[index].amountInvested = totalTemp.results[index - 1].amountInvested + currentMonthValue;
+                totalTemp.results[index].accumulated = Number((interest + monthValueLastMonth + previousAccumulated).toFixed(2));
+                totalTemp.results[index].monthValue = monthValueLastMonth;
+                totalTemp.results[index].amountInvested = totalTemp.results[index - 1].amountInvested + monthValueLastMonth;
             } else {
-                totalTemp.results[index].accumulated = Number((interest + monthValue + totalTemp.results[index - 1].accumulated).toFixed(2));
-                totalTemp.results[index].monthValue = monthValue;
-                totalTemp.results[index].amountInvested = totalTemp.results[index - 1].amountInvested + monthValue;
-            }
+                const monthValueLastMonth = isNotLastMonth ? monthValue : 0;
 
+                totalTemp.results[index].accumulated = Number((interest + monthValueLastMonth + previousAccumulated).toFixed(2));
+                totalTemp.results[index].monthValue = monthValueLastMonth;
+                totalTemp.results[index].amountInvested = totalTemp.results[index - 1].amountInvested + monthValueLastMonth;
+            }
+    
             totalTemp.results[index].interestTotal = calculateInterestTotal(totalTemp);
         }
     });
 
     if(monthsValuesAdjustment.length === 0){
-        totalTemp.amountAccumulated = (monthsTotal * monthValue) + initialValue;
+        totalTemp.amountAccumulated = ((monthsTotal - 1) * monthValue) + initialValue;
     } else{
         totalTemp.amountAccumulated = initialValue + Number((monthsValuesAdjustment.reduce((acc, value) => acc + value, 0)).toFixed(2));
     }

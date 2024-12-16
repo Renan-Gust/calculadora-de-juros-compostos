@@ -15,7 +15,7 @@ interface CustomTooltipType extends TooltipProps<ValueType, NameType> {
 export function Graphic(){
     const [isMobile, setIsMobile] = useState(false);
     const { total } = useResult();
-
+    
     useEffect(() => {
         const handleResize = () => setIsMobile(window.matchMedia("(max-width: 767px)").matches);
         handleResize();
@@ -60,7 +60,7 @@ function FormatYAxis(tickItem: number){
     return formatCurrency(tickItem);
 }
 
-function CustomTooltip({ active, payload, label, data }: CustomTooltipType){
+function CustomTooltip({ active, payload, label }: CustomTooltipType){
     if(active && payload && payload.length){
         return(
             <div className="rounded-lg border bg-card text-card-foreground shadow-sm flex-1 p-6">
